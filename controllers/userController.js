@@ -34,9 +34,9 @@ const UserController = {
       .catch((err) => res.status(500).json(err));
   },
 
-  // 5. Delete user
-  deleteUserById(req, res) {
-    User.findOneAndDelete(req.params.id)
+   // 5. Delete user
+   deleteUser(req, res) {
+    User.findOneAndDelete({ _id: req.params.id })
       .then((userData) => {
         if (!userData) {
           return res.status(404).json({ message: "User not found" });
@@ -45,7 +45,7 @@ const UserController = {
       })
       .catch((err) => res.status(500).json(err));
   },
-
+  
   // 6. Add friend to user's friend list
   addFriend(req, res) {
     User.findOneAndUpdate(

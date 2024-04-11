@@ -15,7 +15,7 @@ const ThoughtController = {
   // Handler for the "get thought by ID" API endpoint
   async getThoughtsById(req, res) {
     try {
-      const thought = await Thought.findOne({_id:req.params.thoughtId});
+      const thought = await Thought.findOne({_id:req.params.id});
       if (!thought) {
         res.status(404).json({ message: 'Thought not found' });
       } else {
@@ -31,6 +31,7 @@ const ThoughtController = {
       const thought = await Thought.create(req.body);
       res.status(201).json(thought);
     } catch (err) {
+      console.log(err); 
       res.status(500).json(err);
     }
   },
@@ -38,7 +39,7 @@ const ThoughtController = {
   // Handler for the "delete thought" API endpoint
   async deleteThought(req,res) {
     try {
-        const thought = await Thought.findByIdAndDelete({_id:req.params.thoughtId});
+        const thought = await Thought.findByIdAndDelete({_id:req.params.id});
         res.status(200).json(thought);
     } catch (err) {
         res.status(500).json(err);
@@ -48,7 +49,7 @@ const ThoughtController = {
   // Handler for the "update thought by ID" API endpoint
   async updateThoughtById(req, res) {
     try {
-      const thought = await Thought.findByIdAndUpdate(req.params.thoughtId, req.body, {
+      const thought = await Thought.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
       });
       if (!thought) {
@@ -65,7 +66,7 @@ const ThoughtController = {
   async createReaction(req, res) {
       try {
         const thought = await Thought.findOneAndUpdate(
-            {_id:req.params.thoughtId},
+            {_id:req.params.id},
             {$addToSet: {reactions: req.body}},
             {runValidators: true, new: true}
         );
@@ -79,7 +80,7 @@ const ThoughtController = {
   async deleteReaction(req, res) {
       try {
         const thought = await Thought.findOneAndUpdate(
-            {_id: req.params.thoughtId},
+            {_id: req.params.id},
             {$pull: {reactions: {reactionId: req.params.reactionId}}},
             {runValidators: true, new: true}
         );
