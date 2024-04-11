@@ -66,7 +66,7 @@ const ThoughtController = {
   async createReaction(req, res) {
       try {
         const thought = await Thought.findOneAndUpdate(
-            {_id:req.params.id},
+            {_id:'reactions'},
             {$addToSet: {reactions: req.body}},
             {runValidators: true, new: true}
         );

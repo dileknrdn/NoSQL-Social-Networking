@@ -1,11 +1,13 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, mongoose } = require("mongoose");
 const reactionSchema = require("./reaction");
 
 const thoughtSchema = new Schema(
   {
+    _id: Schema.Types.ObjectId,
+
     thoughtText: {
       type: String,
-      required: true,
+      required: "You need to leave a thought!",
       min: 1,
       max: 280,
     },
