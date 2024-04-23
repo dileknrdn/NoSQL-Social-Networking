@@ -1,5 +1,5 @@
-const { Thought, User, Reaction } = require('../models');
-const {Types} = require('mongoose');
+const { Thought, User, Reaction } = require("../models");
+const { Types } = require("mongoose");
 
 // Define the ThoughtController object, which contains methods for handling various API requests related to thoughts
 const ThoughtController = {
@@ -15,9 +15,9 @@ const ThoughtController = {
   // Handler for the "get thought by ID" API endpoint
   async getThoughtsById(req, res) {
     try {
-      const thought = await Thought.findOne({_id:req.params.id});
+      const thought = await Thought.findOne({_id: req.params.id});
       if (!thought) {
-        res.status(404).json({ message: 'Thought not found' });
+        res.status(404).json({ message: "Thought not found" });
       } else {
         res.json(thought);
       }
@@ -31,18 +31,18 @@ const ThoughtController = {
       const thought = await Thought.create(req.body);
       res.status(201).json(thought);
     } catch (err) {
-      console.log(err); 
+      console.log(err);
       res.status(500).json(err);
     }
   },
-  
+
   // Handler for the "delete thought" API endpoint
-  async deleteThought(req,res) {
+  async deleteThought(req, res) {
     try {
-        const thought = await Thought.findByIdAndDelete({_id:req.params.id});
-        res.status(200).json(thought);
+      const thought = await Thought.findByIdAndDelete({ _id: req.params.id });
+      res.status(200).json(thought);
     } catch (err) {
-        res.status(500).json(err);
+      res.status(500).json(err);
     }
   },
 
@@ -53,7 +53,7 @@ const ThoughtController = {
         new: true,
       });
       if (!thought) {
-        res.status(404).json({ message: 'Thought not found' });
+        res.status(404).json({ message: "Thought not found" });
       } else {
         res.json(thought);
       }
@@ -64,33 +64,34 @@ const ThoughtController = {
 
   // Handler for the "create reaction" API endpoint
   async createReaction(req, res) {
-      try {
-        const thought = await Thought.findOneAndUpdate(
-            {_id:'reactions'},
-            {$addToSet: {reactions: req.body}},
-            {runValidators: true, new: true}
-        );
-        thought ? res.json(thought) : res.status(404).json({message: notFound});
+    console.log(req.params.reactionId);
+    console.log(req.body);
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { id: req.params.reactionId },
+        { $addToSet: { reactions: req.body } },
+        { runValidators: true, new: true }
+      );
+      thought ? res.json(thought) : res.status(404).json({ message: notFound });
     } catch (e) {
-        res.status(500).json(e);
+      res.status(500).json(e);
     }
   },
 
-// Handler for the "delete reaction" API endpoint
+  // Handler for the "delete reaction" API endpoint
   async deleteReaction(req, res) {
-      try {
-        const thought = await Thought.findOneAndUpdate(
-            {_id: req.params.id},
-            {$pull: {reactions: {reactionId: req.params.reactionId}}},
-            {runValidators: true, new: true}
-        );
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.id },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { runValidators: true, new: true }
+      );
 
-        thought ? res.json(thought) : res.status(404).json({message: notFound});
+      thought ? res.json(thought) : res.status(404).json({ message: notFound });
     } catch (e) {
-        res.status(500).json(e);
+      res.status(500).json(e);
     }
   },
-
 };
 // Export ThoughtController
-module.exports = ThoughtController; 
+module.exports = ThoughtController;
