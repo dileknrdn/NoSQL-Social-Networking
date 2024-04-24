@@ -3,8 +3,7 @@ const reactionSchema = require("./reaction");
 
 const thoughtSchema = new Schema(
   {
-    _id: Schema.Types.ObjectId,
-
+    
     thoughtText: {
       type: String,
       required: "You need to leave a thought!",

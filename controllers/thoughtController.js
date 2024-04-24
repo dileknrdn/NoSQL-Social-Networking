@@ -31,7 +31,6 @@ const ThoughtController = {
       const thought = await Thought.create(req.body);
       res.status(201).json(thought);
     } catch (err) {
-      console.log(err);
       res.status(500).json(err);
     }
   },
@@ -64,8 +63,7 @@ const ThoughtController = {
 
   // Handler for the "create reaction" API endpoint
   async createReaction(req, res) {
-    console.log(req.params.reactionId);
-    console.log(req.body);
+    
     try {
       const thought = await Thought.findOneAndUpdate(
         { id: req.params.reactionId },
