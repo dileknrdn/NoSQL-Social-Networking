@@ -10,7 +10,7 @@ const UserController = {
 
   // 2. Get one user by ID
   getUserById(req, res) {
-    User.findById(req.params.userId)
+    User.findById(req.params.id)
       .then((userData) => res.json(userData))
       .catch((err) => res.status(500).json(err));
   },
@@ -49,7 +49,7 @@ const UserController = {
   // 6. Add friend to user's friend list
   addFriend(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.userId },
+      { _id: req.params.id },
       { $addToSet: { friends: req.body.friendId || req.params.friendId } },
       { new: true }
     )
